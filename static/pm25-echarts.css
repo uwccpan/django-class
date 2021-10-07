@@ -1,0 +1,12 @@
+body{
+    background-color: rgb(94, 94, 94);
+    text-align: center;
+    color: rgb(245, 245, 245);
+}
+
+#main{
+    width: 1200px;
+    height: 600px;
+    margin: 0 auto;
+    background-color: rgb(255, 255, 255);
+}

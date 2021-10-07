@@ -2,6 +2,8 @@ from flask import Flask
 from flask.templating import render_template
 from datetime import datetime
 from source_csv.pm25 import get_pm25
+import json
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -45,8 +47,28 @@ def stock():
 @app.route('/pm25')
 def pm25():
     time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    columns, datas = get_pm25()
+    columns, datas = get_pm25(sort=True)
     return render_template('pm25.html', **locals())
+
+@app.route('/echarts')
+def echarts():
+    return render_template('echarts.html')
+
+@app.route('/pm25-echarts')
+def pm25_echarts():
+    return render_template('pm25-echarts.html')
+
+@app.route('/pm25-data', methods=['GET','POST'])
+def pm25_data():
+    columns, datas=get_pm25()
+    sites, values=[],[]
+    for data in datas:
+        sites.append(data[0])
+        values.append(data[-1])
+    data = {'sites':sites, 'values':values}
+    
+    return json.dumps(data, ensure_ascii=False)
+
 
 
 if __name__=='__main__':
